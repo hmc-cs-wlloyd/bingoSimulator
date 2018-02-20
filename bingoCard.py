@@ -58,6 +58,7 @@ class Card:
         bingoR = False
         bingoV = False
         bingoD = False
+        usedFree = False
  
         #search for row bingos
         for i in range(len(self.cellArray)):
@@ -67,6 +68,8 @@ class Card:
                     rowBingo = False
             if rowBingo:
                 bingoR = True
+                if i == 2:
+                    usedFree = True
         
         #search for column bingos
         for j in range(len(self.cellArray)): #relies on square cards
@@ -76,6 +79,8 @@ class Card:
                     columnBingo = False
             if columnBingo:
                 bingoV = True
+                if j == 2:
+                    usedFree = True
 
         #search for diagonal bingos
         d1bingo = True
@@ -87,8 +92,10 @@ class Card:
                 d2bingo = False
 
         bingoD = (d1bingo or d2bingo)
+        if bingoD:
+            usedFree = True
 
-        return bingoR, bingoV, bingoD
+        return bingoR, bingoV, bingoD, usedFree
         
     
     #utility function for printing cards as arrays so we can see what numbers
