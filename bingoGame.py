@@ -3,7 +3,6 @@ import sys
 import bingoCard
 import itertools
 from collections import defaultdict
-from multiprocessing.dummy import Pool as ThreadPool
 
 def generateCards(numCards, free):
     cardList = []
@@ -69,8 +68,8 @@ if __name__ == "__main__":
     #collect individual results for debug
     #winDataList = []
     
-    pool = ThreadPool(64)
-    dataTable = pool.map(runGame, zip(itertools.repeat(numCards, numGames), itertools.repeat(useFree, numGames)))
+    pool = ThreadPool(1)
+    dataTable = [runGame((numCards, useFree)) for i in range(numGames)]
     pool.close()
     pool.join()
         
@@ -98,30 +97,27 @@ if __name__ == "__main__":
             dataFile.write(str(entry))
         dataFile.write("\n")
             
+
+    dataFile.write("H wins: " + str(winDict[(True, False, False)]) + "\n")
+    dataFile.write("H solo wins: " + str(singleWinnerDict[(True, False, False)]) + "\n")
+    dataFile.write("H wins with free: " + str(usedFreeDict[(True, False, False)]) + "\n")
+    dataFile.write("V wins: " + str(winDict[(False, True, False)]) + "\n")
+    dataFile.write("V solo wins: " + str(singleWinnerDict[(False, True, False)]) + "\n")
+    dataFile.write("V wins with free: " + str(usedFreeDict[(False, True, False)]) + "\n")
+    dataFile.write("D wins: " + str(winDict[(False, False, True)]) + "\n")
+    dataFile.write("D solo wins: " + str(singleWinnerDict[(False, False, True)]) + "\n")
+    dataFile.write("D wins with free: " + str(usedFreeDict[(False, False, True)]) + "\n")
+    dataFile.write("HV wins: " + str(winDict[(True, True, False)]) + "\n")
+    dataFile.write("HV solo wins: " + str(singleWinnerDict[(True, True, False)]) + "\n")
+    dataFile.write("HV wins with free: " + str(usedFreeDict[(True, True, False)]) + "\n")
+    dataFile.write("VD wins: " + str(winDict[(False, True, True)]) + "\n")
+    dataFile.write("VD solo wins: " + str(singleWinnerDict[(False, True, True)]) + "\n")
+    dataFile.write("VD wins with free: " + str(usedFreeDict[(False, True, True)]) + "\n")
+    dataFile.write("HD wins: " + str(winDict[(True, False, True)]) + "\n")
+    dataFile.write("HD solo wins: " + str(singleWinnerDict[(True, False, True)]) + "\n")
+    dataFile.write("HD wins with free: " + str(usedFreeDict[(True, False, True)]) + "\n")
+    dataFile.write("HVD wins: " + str(winDict[(True, True, True)]) + "\n")
+    dataFile.write("HVD solo wins: " + str(singleWinnerDict[(True, True, True)]) + "\n")
+    dataFile.write("HVD wins with free: " + str(usedFreeDict[(True, True, True)]) + "\n")
+
     dataFile.close()
-
-    print "H wins: ", winDict[(True, False, False)]
-    print "H solo wins: ", singleWinnerDict[(True, False, False)]
-    print "H wins with free: ", usedFreeDict[(True, False, False)]
-    print "V wins: ", winDict[(False, True, False)]
-    print "V solo wins: ", singleWinnerDict[(False, True, False)]
-    print "V wins with free: ", usedFreeDict[(False, True, False)]
-    print "D wins: ", winDict[(False, False, True)]
-    print "D solo wins: ", singleWinnerDict[(False, False, True)]
-    print "D wins with free: ", usedFreeDict[(False, False, True)]
-    print "HV wins: ", winDict[(True, True, False)]
-    print "HV solo wins: ", singleWinnerDict[(True, True, False)]
-    print "HV wins with free: ", usedFreeDict[(True, True, False)]
-    print "VD wins: ", winDict[(False, True, True)]
-    print "VD solo wins: ", singleWinnerDict[(False, True, True)]
-    print "VD wins with free: ", usedFreeDict[(False, True, True)]
-    print "HD wins: ", winDict[(True, False, True)]
-    print "HD solo wins: ", singleWinnerDict[(True, False, True)]
-    print "HD wins with free: ", usedFreeDict[(True, False, True)]
-    print "HVD wins: ", winDict[(True, True, True)]
-    print "HVD solo wins: ", singleWinnerDict[(True, True, True)]
-    print "HVD wins with free: ", usedFreeDict[(True, True, True)]
-
-    
-
-    
